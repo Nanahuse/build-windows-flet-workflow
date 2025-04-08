@@ -1,0 +1,19 @@
+[project]
+name = "flet-sample"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "Nanahuse" }]
+dependencies = ["flet==0.27.6"]
+
+[tool.flet]
+product = "flet-sample"
+
+copyright = "Copyright (C) 2025 by Nanahuse"
+
+[tool.flet.app]
+path = "src"
+
+[tool.uv]
+dev-dependencies = ["flet[all]==0.27.6"]

@@ -1,0 +1,57 @@
+# This file refers https://github.com/ndonkoHenri/flet-github-action-workflows/blob/947748022f0d967c02aa675b7312906fe256cff0/.github/workflows/windows-build.yml (MIT License, Copyright (c) 2024 Henri Ndonko)
+
+
+name: Windows Build
+
+on:
+  # Runs on push to any of the below branches
+  push:
+    branches:
+      - main
+
+  # Runs on pull request events that target one of the below branches
+  pull_request:
+    branches:
+      - main
+
+  # Allows you to run this workflow manually from the Actions tab of the repository
+  workflow_dispatch:
+
+env:
+  # Ensures Python uses UTF-8 encoding by default
+  PYTHONUTF8: 1
+
+  # Disables rich text formatting in Flet CLI output
+  FLET_CLI_NO_RICH_OUTPUT: 1
+
+  # Disables progress bars when using UV
+  UV_NO_PROGRESS: 1
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
+    - name: Initialize the project
+      run: uv sync --all-extras --dev
+
+    - name: Build flet app
+      run: |
+        uv run flet build windows --verbose --no-rich-output
+
+    - name: Upload Windows Artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: windows-build-${{ github.ref_name }}
+        path: build/windows
+        if-no-files-found: error
+        overwrite: false
