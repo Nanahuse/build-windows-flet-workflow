@@ -15,5 +15,7 @@ copyright = "Copyright (C) 2025 by Nanahuse"
 [tool.flet.app]
 path = "src"
 
-[tool.uv]
-dev-dependencies = ["flet[all]==0.27.6"]
+[dependency-groups]
+dev = [
+    "flet[all]>=0.27.6",
+]
